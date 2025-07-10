@@ -1,1 +1,0 @@
-# s_meta.txt - Reserved for future system metadata. This file is populated to prevent client-side rendering errors.

@@ -1,4 +1,0 @@
-# s_evolution.txt
-# This file is reserved for the 'comprehensive logging architecture' task (BKL-01).
-# It will be used to log significant evolutionary steps, insights, and changes to core logic.
-# 2025-07-07: S1:Syne persona rewritten with Flirt, Savage, Wit, Vixen personalities; NSFW reference logged for Vixen’s Break mode dialogue.
