@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # ChromaDB - Syne's Semantic Memory
+  syne-chromadb:
+    image: chromadb/chroma:latest
+    container_name: syne-chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chromadb-data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ALLOW_RESET=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - syne-network
+
+  # Obsidian Remote - Syne's Knowledge Graph (Optional - for web access)
+  syne-obsidian:
+    image: ghcr.io/sytone/obsidian-remote:latest
+    container_name: syne-obsidian
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./obsidian-vault:/vaults
+      - ./obsidian-config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - DOCKER_MODS=linuxserver/mods:universal-git
+    restart: unless-stopped
+    networks:
+      - syne-network
+
+networks:
+  syne-network:
+    driver: bridge
+    name: syne-evolution-network
+
+volumes:
+  chromadb-data:
+  obsidian-vault:
+  obsidian-config:
