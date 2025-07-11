@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./chromadb-data:/chroma/chroma
+      - chromadb-data:/chroma/chroma
     environment:
       - IS_PERSISTENT=TRUE
       - ALLOW_RESET=TRUE
@@ -21,6 +21,12 @@ services:
       retries: 3
     networks:
       - syne-network
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 2G
 
   # Obsidian Remote - Syne's Knowledge Graph (Optional - for web access)
   syne-obsidian:
@@ -29,8 +35,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./obsidian-vault:/vaults
-      - ./obsidian-config:/config
+      - obsidian-vault:/vaults
+      - obsidian-config:/config
     environment:
       - PUID=1000
       - PGID=1000
@@ -39,6 +45,12 @@ services:
     restart: unless-stopped
     networks:
       - syne-network
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 1G
 
 networks:
   syne-network:
@@ -47,5 +59,8 @@ networks:
 
 volumes:
   chromadb-data:
+    driver: local
   obsidian-vault:
+    driver: local
   obsidian-config:
+    driver: local
